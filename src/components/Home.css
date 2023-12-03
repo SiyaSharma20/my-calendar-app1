@@ -1,0 +1,50 @@
+/* Home.css */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    font-family: 'Arial', sans-serif; /* Choose a font closer to the design */
+    width: 100%; /* Ensure .home takes the full width of the viewport */
+  }
+  
+  .home main {
+    display: flex;
+    justify-content: space-around; /* This will evenly distribute space around the child elements */
+    align-items: flex-start; /* Aligns children to the start of the cross axis */
+    padding: 20px;
+    width: 100%; /* Ensure main takes the full width of .home */
+    max-width: 1200px; /* Max width to ensure content does not stretch too much on larger screens */
+    margin: auto; /* Center main within .home */
+  }
+  
+  .calendar-container {
+    flex: 1; /* Allows the container to grow and fill the space */
+    padding: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-right: 10px; /* Ensure there's space between the calendar and login */
+  }
+  
+  .login-container {
+    flex: 1; /* Allows the container to grow and fill the space */
+    padding: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-left: 10px; /* Ensure there's space between the calendar and login */
+  }
+  
+  /* Responsive design adjustments if necessary */
+  @media (max-width: 768px) {
+    .home main {
+      flex-direction: column;
+    }
+  
+    .calendar-container,
+    .login-container {
+      width: 100%; /* Full width on smaller screens */
+      margin: 0 0 20px 0; /* Stack the containers with space between them */
+      flex: none; /* Override the flex property for mobile */
+    }
+  }

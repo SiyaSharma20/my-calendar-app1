@@ -1,0 +1,37 @@
+.Card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  transition: box-shadow 0.3s;
+    transition: background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+  }
+
+  .Card img{
+  border-radius: 5%;
+  border: 2px solid #5e72e4;
+  max-width: 100px; 
+}
+
+.Card strong {
+  margin-top: 5px;
+}
+
+.Card span {
+  color: rgb(119, 119, 119);
+  font-size: 90%;
+  margin: auto;
+}
+
+.Card:hover {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  background-color: #e2e2ff;
+}
+  

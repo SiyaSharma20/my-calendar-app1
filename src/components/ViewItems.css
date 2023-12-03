@@ -1,0 +1,44 @@
+ .ViewItems {
+  max-width: 600px;
+  margin: 0 auto;
+}
+  
+.ViewItems h2 {
+  color: #5e72e4;
+  text-align: center;
+  margin-bottom: 0;
+}
+  
+.ViewItems ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ViewItems li {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+  
+.ViewItems li.Card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ViewItems strong {
+  color: #5e72e4;
+}
+  
+.ViewItems p {
+  margin: 5px 0;
+  color: #555;
+}
+  
+.ViewItems span {
+  margin-left: 5px;
+}

@@ -1,0 +1,67 @@
+/* Header.css */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #f8f9fa;
+  
+  }
+  
+  .logo {
+    font-weight: bold;
+    color: #5e72e4; 
+  }
+  
+  .navigation ul {
+    list-style: none;
+    display: flex;
+    float: left;
+    /*gap: 15px;*/
+    margin: 10px;
+    padding: 5px;
+  }
+  
+  .navigation li, li a {
+     padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+  }
+  
+    .navigation li:hover, li a:hover {
+    background: #5e72e4;
+    color:#f8f9fa;
+    transition: background-color 0.3s;
+    text-decoration: none;
+  }
+  
+  /*
+  .sign-in {
+    background-color: #5e72e4; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .sign-in:hover {
+    background-color: #4e62d4; 
+  }
+  */
+
+   .sign-in, .log-out {
+    background-color: #5e72e4; /* Adjust the color to match your branding */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 10px 0 15px 0;
+    transition: background-color 0.3s
+  }
+  
+  .sign-in:hover, .log-out:hover {
+    background-color: #4e62d4; /* Darker shade for hover state */
+    transition: background-color 0.3s
+  }

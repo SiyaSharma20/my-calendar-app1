@@ -1,0 +1,57 @@
+.authenticatedview {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    font-family: 'Arial', sans-serif; /* Choose a font closer to the design */
+    width: 100%; /* Ensure .home takes the full width of the viewport */
+  }
+  
+  .authenticatedview main {
+    display: flex;
+    justify-content: space-around; /* This will evenly distribute space around the child elements */
+    align-items: flex-start; /* Aligns children to the start of the cross axis */
+    padding: 20px;
+    width: 100%; /* Ensure main takes the full width of .home */
+    max-width: 1200px; /* Max width to ensure content does not stretch too much on larger screens */
+    margin: auto; /* Center main within .home */
+  }
+  
+  .calendar-container {
+    flex: 1; /* Allows the container to grow and fill the space */
+    padding: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-right: 10px; /* Ensure there's space between the calendar and login */
+    float:left
+  }
+
+.button-container {
+    flex: 1; /* Allows the container to grow and fill the space */
+    padding: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-left: 10px; /* Ensure there's space between the calendar and login */
+    float:right;
+}
+.new-button {
+  background-color: #5e72e4;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 15px;
+    transition: background-color 0.3s;
+    max-width: 57.5%;
+}
+
+.new-button:hover {
+  background-color: #4e62d4;
+    transition: background-color 0.3s
+}
+
+.welcome-message h1{
+    text-align: center;
+    font-style: italic;
+}

@@ -1,0 +1,77 @@
+
+  /* Style for the AddItem component container */
+.AddItem {
+    max-width: 30%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    justify-self: center;
+    
+  }
+  
+  /* Style for the form within the AddItem component */
+  .AddItem form {
+    text-align: center;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  /* Style for the form labels */
+  .AddItem label {
+    margin: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .AddItem h2 {
+    color: #5e72e4;
+    text-align: center;
+  }
+  /* Style for the form input fields */
+  .AddItem input {
+    padding: 8px;
+    margin: 0px 7px 12px 7px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s
+  }
+
+  .AddItem input:focus {
+    background-color:#e2e2ff;
+  }
+  
+  
+  /* Style for the form submit button */
+  .AddItem button {
+    padding: 10px;
+    background-color: #5e72e4;
+    color: #fff;
+    border: 2px solid #5e72e4;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+  }
+  
+  /* Style for the form submit button on hover */
+  .AddItem button:hover {
+    background-color: #4e62d4;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+  }
+  
+  .success-message {
+    color: green;
+    font-size: 0.9em;
+  }
