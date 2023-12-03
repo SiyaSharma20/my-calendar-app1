@@ -4,49 +4,44 @@ import AuthenticatedHeader from './AuthenticatedHeader';
 import Card from './Card';
 import './ViewItems.css';
 
+import { useAppContext } from './AppContext';
+import axios from 'axios';
+
 /**
  * Component for displaying the user's current items.
  *
  * @component
  */
-const ViewItems = (props) => {
-  // Dummy data
-  const userItems = [
-    {
-      name: 'Dinner with friends',
-      description: 'Description for User Item 1',
-      date: '2023-11-20',
-    },
-    {
-      name: 'Doctor appointment',
-      description: 'Description for User Item 2',
-      date: '2023-11-21',
-    },
-    {
-      name: 'Vet visit',
-      description: 'Description for User Item 3',
-      date: '2023-11-22',
-    },
-  ];
+const ViewItems = () => {
+  const { state, dispatch } = useAppContext();
 
-  /**
-   * Renders the MyItemsPage component.
-   *
-   * @returns {JSX.Element} JSX representation of the component.
-   */
+  useEffect(() => {
+    // Fetch items from the server when the component mounts
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/events'); // Adjust the endpoint
+        dispatch({ type: 'SET_ITEMS', payload: response.data });
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
+    fetchItems();
+  }, [dispatch]);
+
   return (
     <div>
       <AuthenticatedHeader />
       <div className="ViewItems">
         <h2>My Items</h2>
-        {userItems.map((item, index) => (
-          <Card key={index}>
+        {state.items.map((item) => (
+          <Card key={item._id}>
             <div>
-              <strong>{item.name}</strong>
-              <p>{item.description}</p>
+              <strong>{item.itemName}</strong>
+              <p>{item.itemDescription}</p>
               <div>
                 <FaCalendar />
-                <span>{item.date}</span>
+                <span>{item.selectedDate}</span>
               </div>
             </div>
           </Card>
