@@ -6,9 +6,13 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./models/userSchema');
 
-const SECRET_KEY = 'secretkey';
-//connect to express app
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+const SECRET_KEY = 'secretkey';
 
 //connect to Mongodb
 const dbURI =
@@ -76,3 +80,30 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Error logging in' });
   }
 });
+
+const eventSchema = new mongoose.Schema({
+  itemName: String,
+  itemDescription: String,
+  itemTag: String,
+  selectedDate: Date,
+});
+const Event = mongoose.model('Event', eventSchema);
+app.post('/api/events', async (req, res) => {
+  const { itemName, itemDescription, itemTag, selectedDate } = req.body;
+  const newEvent = new Event({
+    itemName,
+    itemDescription,
+    itemTag,
+    selectedDate,
+  });
+  try {
+    await newEvent.save();
+    res.status(201).json(newEvent);
+  } catch (error) {
+    console.error('Error saving event:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+

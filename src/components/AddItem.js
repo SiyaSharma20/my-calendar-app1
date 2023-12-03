@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker'; // imported calendar API
 import 'react-datepicker/dist/react-datepicker.css'; // Styling for calendar selection
 import './AddItem.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
+import axios from 'axios';
 
 /**
  * Component for adding a new item with a form.
@@ -23,6 +24,7 @@ const AddItem = () => {
   const [newItem, setNewItem] = useState({
     itemName: '',
     itemDescription: '',
+    itemTag: '',
     selectedDate: null,
   });
   const [errors, setErrors] = useState({});
@@ -47,6 +49,10 @@ const AddItem = () => {
     setNewItem((prevItem) => ({ ...prevItem, selectedDate: date }));
   };
 
+  const handleSelectChange = (e) => {
+    setNewItem((prevItem) => ({ ...prevItem, itemTag: e.target.value }));
+  };
+
   /**
    * Validates the form input fields.
    *
@@ -58,9 +64,7 @@ const AddItem = () => {
   const validate = () => {
     let tempErrors = {};
     tempErrors.itemName = newItem.itemName ? '' : 'Item name is required.';
-    tempErrors.itemDescription = newItem.itemDescription
-      ? ''
-      : 'Description is required.';
+    tempErrors.itemDescription = newItem.itemDescription ? '' : 'Description is required.';
     tempErrors.selectedDate = newItem.selectedDate ? '' : 'Date is required.';
 
     setErrors(tempErrors);
@@ -76,7 +80,7 @@ const AddItem = () => {
    * called after successful form submission.
    */
   const resetForm = () => {
-    setNewItem({ itemName: '', itemDescription: '', selectedDate: null });
+    setNewItem({ itemName: '', itemDescription: '', itemTag: '', selectedDate: null });
     setErrors({});
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
@@ -87,11 +91,20 @@ const AddItem = () => {
    *
    * @param {Object} e - The event object.
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log('New Item Data:', newItem);
-      resetForm();
+      try {
+        const response = await axios.post('http://localhost:4000/api/events', newItem);
+        if (response.status === 201) {
+          console.log('New Item Data:', newItem);
+          resetForm();
+        } else {
+          console.error('Failed to add item. Server returned:', response.status, response.data);
+        }
+      } catch (error) {
+        console.error('Error adding item:', error);
+      }
     }
   };
 
@@ -103,12 +116,7 @@ const AddItem = () => {
         <form onSubmit={handleSubmit}>
           <label>
             Item Name
-            <input
-              type="text"
-              name="itemName"
-              value={newItem.itemName}
-              onChange={handleInputChange}
-            />
+            <input type="text" name="itemName" value={newItem.itemName} onChange={handleInputChange} />
             {errors.itemName && <div className="error">{errors.itemName}</div>}
           </label>
           <br />
@@ -120,28 +128,29 @@ const AddItem = () => {
               value={newItem.itemDescription}
               onChange={handleInputChange}
             />
-            {errors.itemDescription && (
-              <div className="error">{errors.itemDescription}</div>
-            )}
+            {errors.itemDescription && <div className="error">{errors.itemDescription}</div>}
+          </label>
+          <br />
+          <label>
+            Tag
+            <select name="itemTag" value={newItem.itemTag} onChange={handleSelectChange}>
+              <option value=""></option>
+              <option value="Appointment">Appointment</option>
+              <option value="Social">Social</option>
+              <option value="Reminder">Reminder</option>
+              <option value="Miscellaneous">Miscellaneous</option>
+            </select>
           </label>
           <br />
           <label>
             Select Date
-            <DatePicker
-              selected={newItem.selectedDate}
-              onChange={handleDateChange}
-              dateFormat="MM/dd/yyyy"
-            />
-            {errors.selectedDate && (
-              <div className="error">{errors.selectedDate}</div>
-            )}
+            <DatePicker selected={newItem.selectedDate} onChange={handleDateChange} dateFormat="MM/dd/yyyy" />
+            {errors.selectedDate && <div className="error">{errors.selectedDate}</div>}
           </label>
           <br />
           <button type="submit">Add Item</button>
         </form>
-        {isSubmitted && (
-          <div className="success-message">Item added successfully!</div>
-        )}
+        {isSubmitted && <div className="success-message">Item added successfully!</div>}
       </div>
     </div>
   );
