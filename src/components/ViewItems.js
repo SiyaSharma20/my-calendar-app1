@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './ViewItems.css';
+
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 const ViewItems = () => {
   const [items, setItems] = useState([]);
@@ -23,18 +29,21 @@ const ViewItems = () => {
   }, []);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="error">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>View Items</h2>
-      <ul>
+    <div className="container">
+      <div className="header">
+        <h2>View Items</h2>
+      </div>
+      <ul className="item-list">
         {items.map((item) => (
-          <li key={item.id}>
-            <strong>Name:</strong> {item.itemName},{' '}
-            <strong>Description:</strong> {item.itemDescription}, <strong>Date:</strong>{' '}
-            {item.selectedDate}, <strong>Tag:</strong> {item.itemTag}
+          <li key={item.id} className="item">
+            <h3>{item.itemName}</h3>
+            <p><strong>Description:</strong> {item.itemDescription}</p>
+            <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
+            <p><strong>Tag:</strong> {item.itemTag}</p>
           </li>
         ))}
       </ul>
@@ -43,3 +52,4 @@ const ViewItems = () => {
 };
 
 export default ViewItems;
+
