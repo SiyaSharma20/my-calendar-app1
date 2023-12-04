@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewItems.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
 const ViewItems = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const fetchItems = async () => {
     try {
@@ -66,38 +62,23 @@ const ViewItems = () => {
 
   return (
     <div>
-      <AuthenticatedHeader />
-      <div className="container">
-        <div className="header">
-          <h2>View Items</h2>
-        </div>
-        <div className="content">
-          <div className="calendar-container">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 500 }}
-              onSelectEvent={event => setSelectedEvent(event)}
-            />
-          </div>
-          <div className="event-list-container">
-            <h2>To Do</h2>
-            <ul className="item-list">
-              {items.map((item) => (
-                <li key={item._id} className="item">
-                  <h3>{item.itemName}</h3>
-                  <p><strong>Date:</strong> {moment(item.selectedDate).format('MMMM D, YYYY')}</p>
-                  <img src={item.itemImage} alt={item.itemDescription} width="500px"/>
-                  <button onClick={() => handleDelete(item._id)}>Delete</button>
-                  <button onClick={() => console.log('Edit button clicked')}>Edit</button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+    <AuthenticatedHeader />
+    <div className="container">
+      <div className="header">
+        <h2>View Items</h2>
       </div>
+      <ul className="item-list">
+        {items.map((item) => (
+          <li key={item._id} className="item">
+            <h3>{item.itemName}</h3>
+            <p><strong>Description:</strong> {item.itemDescription}</p>
+            <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
+            <p><strong>Tag:</strong> {item.itemTag}</p>
+            <button onClick={() => handleDelete(item._id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
     </div>
   );
 };
