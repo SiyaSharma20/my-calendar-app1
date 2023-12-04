@@ -8,6 +8,9 @@ import ViewItems from './components/ViewItems';
 import SignupPage from './pages/SignupPage';
 import EditItem from './components/EditItem';
 
+import ReactDOM from 'react-dom';
+import { AppProvider } from './components/AppContext';
+
 function App() {
   const isUserSignedIn = !!localStorage.getItem('token');
 
@@ -24,7 +27,11 @@ function App() {
     console.log('Submit edited item:', editedItem);
   };
 
+  
+
   return (
+    ReactDOM.render(
+      <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -43,6 +50,9 @@ function App() {
         />
       </Routes>
     </Router>
+    </React.StrictMode>,
+    document.getElementById('root')
+    )
   );
 }
 
