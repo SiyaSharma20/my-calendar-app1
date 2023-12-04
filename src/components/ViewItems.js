@@ -1,57 +1,59 @@
-import React from 'react';
-import { FaCalendar } from 'react-icons/fa';
-import AuthenticatedHeader from './AuthenticatedHeader';
-import Card from './Card';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './ViewItems.css';
 
-/**
- * Component for displaying the user's current items.
- *
- * @component
- */
-const ViewItems = (props) => {
-  // Dummy data
-  const userItems = [
-    {
-      name: 'Dinner with friends',
-      description: 'Description for User Item 1',
-      date: '2023-11-20',
-    },
-    {
-      name: 'Doctor appointment',
-      description: 'Description for User Item 2',
-      date: '2023-11-21',
-    },
-    {
-      name: 'Vet visit',
-      description: 'Description for User Item 3',
-      date: '2023-11-22',
-    },
-  ];
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
-  /**
-   * Renders the MyItemsPage component.
-   *
-   * @returns {JSX.Element} JSX representation of the component.
-   */
+const ViewItems = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/events');
+        if (response.status === 200) {
+          setItems(response.data);
+        } else {
+          setError(`Failed to fetch items. Server returned: ${response.status} ${response.data}`);
+        }
+      } catch (error) {
+        setError(`Error fetching items: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
   return (
-    <div>
-      <AuthenticatedHeader />
-      <div className="ViewItems">
-        <h2>My Items</h2>
-        {userItems.map((item, index) => (
-          <Card key={index}>
-            <div>
-              <strong>{item.name}</strong>
-              <p>{item.description}</p>
-              <div>
-                <FaCalendar />
-                <span>{item.date}</span>
-              </div>
-            </div>
-          </Card>
-        ))}
+    <div className="container">
+      <div className="header">
+        <h2>View Items</h2>
       </div>
+      <ul className="item-list">
+        {items.map((item) => (
+          <li key={item.id} className="item">
+            <h3>{item.itemName}</h3>
+            <p><strong>Description:</strong> {item.itemDescription}</p>
+            <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
+            <p><strong>Tag:</strong> {item.itemTag}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -53,12 +53,32 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
+  const handleEditItem = (editedItem) => {
+    // Assuming each item in itemsList has a unique identifier like 'id'
+    const editedItemId = editedItem.id;
+
+    // Find the index of the item to be edited in the itemsList
+    const itemIndexToEdit = itemsList.findIndex((item) => item.id === editedItemId);
+
+    if (itemIndexToEdit !== -1) {
+      // Create a new array with the edited item replacing the old one
+      const updatedItemsList = [...itemsList];
+      updatedItemsList[itemIndexToEdit] = editedItem;
+
+      // Update the state with the modified list
+      onEditSubmit(updatedItemsList);
+
+      console.log('Submit edited item:', editedItem);
+      resetForm();
+    } else {
+      console.error('Item not found in the list.');
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log('Edited Item Data:', editedItem);
-      onEditSubmit(editedItem);
-      resetForm();
+      handleEditItem(editedItem);
     }
   };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import './App.css';
@@ -9,26 +9,37 @@ import SignupPage from './pages/SignupPage';
 import EditItem from './components/EditItem';
 
 function App() {
+  const [itemsList, setItemsList] = useState([]);
   const isUserSignedIn = !!localStorage.getItem('token');
 
-  const isAuth = false;
-  // Placeholder
-  const itemToEdit = {
-    itemName: 'Example Item to Edit',
-    itemDescription: 'Example Description to Edit',
-    selectedDate: new Date(),
+  const handleAddItem = (newItem) => {
+    setItemsList((prevItems) => [...prevItems, newItem]);
   };
 
-  // Placeholder
-  const onEditSubmit = (editedItem) => {
-    console.log('Submit edited item:', editedItem);
+  const handleEditItem = (editedItem) => {
+    const editedItemId = editedItem.id;
+    const itemIndexToEdit = itemsList.findIndex((item) => item.id === editedItemId);
+  
+    if (itemIndexToEdit !== -1) {
+      const updatedItemsList = [...itemsList];
+      updatedItemsList[itemIndexToEdit] = editedItem;
+      setItemsList(updatedItemsList);
+  
+      console.log('Submit edited item:', editedItem);
+    } else {
+      console.error('Item not found in the list.');
+    }
   };
+  
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/additem" element={<AddItem />} />
+        <Route
+          path="/additem"
+          element={<AddItem onAddSubmit={handleAddItem} />}
+        />
         <Route path="/viewitems" element={<ViewItems />} />
         <Route path="/signup" element={<SignupPage />} />
         {isUserSignedIn && (
@@ -37,9 +48,7 @@ function App() {
 
         <Route
           path="/edititems"
-          element={
-            <EditItem itemToEdit={itemToEdit} onEditSubmit={onEditSubmit} />
-          }
+          element={<EditItem itemsList={itemsList} onEditSubmit={handleEditItem} />}
         />
       </Routes>
     </Router>
