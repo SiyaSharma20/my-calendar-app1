@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewItems.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
-};
+const localizer = momentLocalizer(moment);
 
 const ViewItems = () => {
   const [items, setItems] = useState([]);
@@ -51,28 +51,32 @@ const ViewItems = () => {
     return <div className="error">{error}</div>;
   }
 
+  const events = items.map(item => ({
+    id: item._id,
+    title: item.itemName,
+    start: new Date(item.selectedDate),
+    end: new Date(item.selectedDate),
+  }));
+
   return (
     <div>
-    <AuthenticatedHeader />
-    <div className="container">
-      <div className="header">
-        <h2>View Items</h2>
+      <AuthenticatedHeader />
+      <div className="container">
+        <div className="header">
+          <h2>View Items</h2>
+        </div>
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
       </div>
-      <ul className="item-list">
-        {items.map((item) => (
-          <li key={item._id} className="item">
-            <h3>{item.itemName}</h3>
-            <p><strong>Description:</strong> {item.itemDescription}</p>
-            <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
-            <p><strong>Tag:</strong> {item.itemTag}</p>
-            <button onClick={() => handleDelete(item._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
     </div>
   );
 };
 
 export default ViewItems;
+
 
