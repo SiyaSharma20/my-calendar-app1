@@ -1,34 +1,20 @@
 const express = require('express');
-
 const mongoose = require('mongoose');
-
 const cors = require('cors');
-
 const bodyParser = require('body-parser');
-
 const bcrypt = require('bcryptjs');
-
 const jwt = require('jsonwebtoken');
-
 const User = require('./models/userSchema');
 
-
-
 const app = express();
-
 const PORT = process.env.PORT || 5000;
-
-
 
 app.use(cors());
 
 app.use(express.json());
 
 
-
 const SECRET_KEY = 'secretkey';
-
-
 
 //connect to Mongodb
 
@@ -45,45 +31,27 @@ mongoose.connect(dbURI, {
   });
 
 })
-
   .catch((error) => {
 
     console.log('Unable to connect to Server and/or MongoDb');
 
   });
 
-
-
 //middleware
-
 app.use(bodyParser.json());
 
 app.use(cors());
 
-
-
 //Routes
-
 //User Registration
-
-
-
 app.post('/register', async (req, res) => {
-
   try {
-
     const { email, password } = req.body;
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new User({ email, password: hashedPassword });
-
     await newUser.save();
-
     res.status(201).json({ message: 'User created successfully' });
-
   } catch (error) {
-
     res.status(500).json({ error: 'Error signing up' });
 
   }
@@ -255,31 +223,16 @@ app.delete('/api/events/:id', async (req, res) => {
   }
 
 });
-
-
-
 app.put('/api/events/:id', async (req, res) => {
-
   try {
-
     const { id } = req.params;
-
     const updatedEvent = await Event.findByIdAndUpdate(id, req.body, { new: true });
-
     if (!updatedEvent) {
-
       return res.status(404).json({ error: 'Event not found' });
-
     }
-
     res.status(200).json(updatedEvent);
-
   } catch (error) {
-
     console.error('Error updating event:', error);
-
     res.status(500).json({ error: 'Internal Server Error' });
-
   }
-
 });

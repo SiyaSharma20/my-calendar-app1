@@ -7,6 +7,7 @@ import AddItem from './components/AddItem';
 import ViewItems from './components/ViewItems';
 import SignupPage from './pages/SignupPage';
 import EditItem from './components/EditItem';
+import NotFound from './components/NotFound';
 
 import ReactDOM from 'react-dom';
 import { AppProvider } from './components/AppContext';
@@ -43,8 +44,9 @@ function App() {
               <Route path="/additem" element={<AddItem />} />
               <Route path="/viewitems" element={<ViewItems onEditClick={handleEditClick} />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="*" element={<NotFound loggedIn={isAuth} />} />
               {isUserSignedIn && (
-                <Route path="authenticatedview" element={<AuthenticatedView />} />
+                <Route path="/authenticatedview" element={<AuthenticatedView />} />
               )}
               {selectedItem && (
                 <Route path="/edititems" element={<EditItem selectedItem={selectedItem} onEditSubmit={onEditSubmit} />} />
