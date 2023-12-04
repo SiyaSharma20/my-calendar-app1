@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import './App.css';
@@ -15,6 +15,7 @@ function App() {
   const isUserSignedIn = !!localStorage.getItem('token');
 
   const isAuth = false;
+  const [selectedItem, setSelectedItem] = useState(null);
   // Placeholder
   const itemToEdit = {
     itemName: 'Example Item to Edit',
@@ -27,7 +28,10 @@ function App() {
     console.log('Submit edited item:', editedItem);
   };
 
-  
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    // Additional logic if needed
+  };
 
   return (
     ReactDOM.render(
@@ -37,17 +41,19 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/additem" element={<AddItem />} />
-              <Route path="/viewitems" element={<ViewItems />} />
+              <Route path="/viewitems" element={<ViewItems onEditClick={handleEditClick} />} />
               <Route path="/signup" element={<SignupPage />} />
               {isUserSignedIn && (
-              <Route path="authenticatedview" element={<AuthenticatedView />} />
+                <Route path="authenticatedview" element={<AuthenticatedView />} />
               )}
-              <Route path="/edititems"element={<EditItem itemToEdit={itemToEdit} onEditSubmit={onEditSubmit} />}/>
+              {selectedItem && (
+                <Route path="/edititems" element={<EditItem selectedItem={selectedItem} onEditSubmit={onEditSubmit} />} />
+              )}
             </Routes>
           </AppProvider>
         </Router>
       </React.StrictMode>,
-    document.getElementById('root')
+      document.getElementById('root')
     )
   );
 }

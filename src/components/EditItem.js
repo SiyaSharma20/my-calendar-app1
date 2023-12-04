@@ -1,43 +1,49 @@
-
 import React, { useState, useEffect } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import './EditItem.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
 
-const EditItem = ({ itemsList, onEditSubmit }) => {
+const EditItem = ({ itemsList, onEditSubmit, selectedItemId }) => {
   const [editedItem, setEditedItem] = useState({
+    _id: '',
     itemName: '',
     itemDescription: '',
-    selectedDate: null,
+    selectedDate: '',
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    // Assuming the first item is initially selected
-    if (itemsList && itemsList.length > 0) {
-      setEditedItem(itemsList[0]);
+    // Find the selected item by ID and set it to state
+    const selectedItem = itemsList.find(item => item._id === selectedItemId);
+    if (selectedItem) {
+      setEditedItem({
+        ...selectedItem,
+        // Ensure the date is in the correct format for the date input field
+        selectedDate: selectedItem.selectedDate ? new Date(selectedItem.selectedDate).toISOString().split('T')[0] : ''
+      });
     }
-  }, [itemsList]);
+  }, [itemsList, selectedItemId]);
 
   const validate = () => {
-    let isValid = true;
+    // Check if all fields are filled
     if (
       !editedItem.itemName ||
       !editedItem.itemDescription ||
       !editedItem.selectedDate
     ) {
-      isValid = false;
       console.log('Please fill in all fields.');
+      return false;
     }
-    return isValid;
+    return true;
   };
 
   const resetForm = () => {
     setEditedItem({
+      _id: '',
       itemName: '',
       itemDescription: '',
-      selectedDate: null,
+      selectedDate: '',
     });
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
@@ -47,14 +53,16 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
     e.preventDefault();
     if (validate()) {
       console.log('Edited Item Data:', editedItem);
-      onEditSubmit(editedItem);
+      onEditSubmit({
+        ...editedItem,
+        selectedDate: new Date(editedItem.selectedDate) // Convert back to Date object for submission
+      });
       resetForm();
     }
   };
 
   return (
     <div>
-      <AuthenticatedHeader />
       <div className="EditItem">
         <h2>Edit Item</h2>
         <form onSubmit={handleSubmit}>
@@ -65,9 +73,7 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
               <input
                 type="text"
                 value={editedItem.itemName}
-                onChange={(e) =>
-                  setEditedItem({ ...editedItem, itemName: e.target.value })
-                }
+                onChange={(e) => setEditedItem({ ...editedItem, itemName: e.target.value })}
               />
             </label>
             <br />
@@ -76,12 +82,7 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
               <input
                 type="text"
                 value={editedItem.itemDescription}
-                onChange={(e) =>
-                  setEditedItem({
-                    ...editedItem,
-                    itemDescription: e.target.value,
-                  })
-                }
+                onChange={(e) => setEditedItem({ ...editedItem, itemDescription: e.target.value })}
               />
             </label>
             <br />
@@ -89,26 +90,15 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
               Date
               <input
                 type="date"
-                value={
-                  editedItem.selectedDate
-                    ? editedItem.selectedDate.toISOString().split('T')[0]
-                    : ''
-                }
-                onChange={(e) =>
-                  setEditedItem({
-                    ...editedItem,
-                    selectedDate: new Date(e.target.value),
-                  })
-                }
+                value={editedItem.selectedDate}
+                onChange={(e) => setEditedItem({ ...editedItem, selectedDate: e.target.value })}
               />
             </label>
           </div>
           <br />
           <button type="submit">Save Changes</button>
         </form>
-        {isSubmitted && (
-          <div className="success-message">Item edited successfully!</div>
-        )}
+        {isSubmitted && <div className="success-message">Item edited successfully!</div>}
       </div>
     </div>
   );

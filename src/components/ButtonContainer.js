@@ -16,10 +16,6 @@ const ButtonContainer = () => {
       <button onClick={() => navigate('/additem')} className="new-button">
         Add Item
       </button>
-      <button onClick={handleEditItemClick} className="new-button">
-        Edit Item
-      </button>
-      <button className="new-button">Delete Item</button>
     </div>
   );
 };
