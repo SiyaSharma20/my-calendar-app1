@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewItems.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useNavigate } from 'react-router-dom';
 
 const localizer = momentLocalizer(moment);
 
 const ViewItems = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const navigate = useNavigate();
 
   const fetchItems = async () => {
     try {
@@ -22,9 +28,51 @@ const ViewItems = () => {
     }
   };
 
+  const handleEdit = async (itemId) => {
+    try {
+      console.log('Redirecting to Edit items with item ID:', itemId);
+      navigate('/edititems');
+      //navigate('/edit-item/:itemId');
+    } catch (error) {
+      console.error('Error redirecting to Edit Items:', error);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
   }, []);
+
+  const handleUpdate = async (updatedItem) => {
+    try {
+      console.log('Sending PUT request for item with id:', updatedItem._id);
+
+      const response = await axios.put(
+        `http://localhost:4000/api/events/${updatedItem._id}`,
+        updatedItem
+      );
+
+      console.log('PUT request successful. Server response:', response);
+
+      if (response.status === 200) {
+        // Update the item in the state
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item._id === updatedItem._id ? updatedItem : item
+          )
+        );
+        // Redirect back to the View Items page after successful update
+        navigate('/view-items');
+      } else {
+        console.error(
+          'Failed to update item. Server returned:',
+          response.status,
+          response.data
+        );
+      }
+    } catch (error) {
+      console.error('Error updating item:', error);
+    }
+  };
 
   const handleDelete = async (itemId) => {
     try {
@@ -62,25 +110,40 @@ const ViewItems = () => {
 
   return (
     <div>
-    <AuthenticatedHeader />
-    <div className="container">
-      <div className="header">
-        <h2>View Items</h2>
+      <AuthenticatedHeader />
+      <div className="container">
+        <div className="header">
+          <h2>View Items</h2>
+        </div>
+        <div className="content">
+          <div className="calendar-container">
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500 }}
+              onSelectEvent={event => setSelectedEvent(event)}
+            />
+          </div>
+          <div className="event-list-container">
+            <h2>Event List</h2>
+            <ul className="item-list">
+              {items.map((item) => (
+                <li key={item._id} className="item">
+                  <h3>{item.itemName}</h3>
+                  <p><strong>Date:</strong> {moment(item.selectedDate).format('MMMM D, YYYY')}</p>
+                  <button onClick={() => handleDelete(item._id)}>Delete</button>
+                  <button onClick={() => handleEdit(item._id)}>Edit</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-      <ul className="item-list">
-        {items.map((item) => (
-          <li key={item._id} className="item">
-            <h3>{item.itemName}</h3>
-            <p><strong>Description:</strong> {item.itemDescription}</p>
-            <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
-            <p><strong>Tag:</strong> {item.itemTag}</p>
-            <button onClick={() => handleDelete(item._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
     </div>
   );
 };
 
 export default ViewItems;
+
