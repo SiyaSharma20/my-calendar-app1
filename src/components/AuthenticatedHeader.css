@@ -1,43 +1,43 @@
 /* Header.css */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-  }
-  
-  .logo {
-    font-weight: bold;
-    color: #5e72e4; /* Adjust the color to match your branding */
-  }
-  
-  .navigation ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navigation li {
-    cursor: pointer;
-    padding: 5px;
-    cursor: pointer;
-    background-color: #f8f9fa;
-    transition: background-color 0.3s
-  }
-  
-  .log-out {
-    background-color: #5e72e4; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-     font-size: 15px;
-  }
-  
-  .log-out:hover {
-    background-color: #4e62d4; /* Darker shade for hover state */
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+}
+
+.logo {
+  font-weight: bold;
+  color: #5e72e4; /* Adjust the color to match your branding */
+}
+
+.navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation li {
+  margin: auto;
+  cursor: pointer;
+  padding: 5px;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s
+}
+
+.log-out {
+  background-color: #5e72e4; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+   font-size: 15px;
+}
+
+.log-out:hover {
+  background-color: #4e62d4; /* Darker shade for hover state */
+}

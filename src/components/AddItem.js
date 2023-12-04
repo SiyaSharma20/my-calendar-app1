@@ -24,6 +24,7 @@ const AddItem = () => {
   const [newItem, setNewItem] = useState({
     itemName: '',
     itemDescription: '',
+    itemImage: '',
     itemTag: '',
     selectedDate: null,
   });
@@ -65,8 +66,8 @@ const AddItem = () => {
     let tempErrors = {};
     tempErrors.itemName = newItem.itemName ? '' : 'Item name is required.';
     tempErrors.itemDescription = newItem.itemDescription ? '' : 'Description is required.';
+    tempErrors.itemImage = newItem.itemImage ?  '' : "Link to image is required";
     tempErrors.selectedDate = newItem.selectedDate ? '' : 'Date is required.';
-
     setErrors(tempErrors);
     return Object.values(tempErrors).every((x) => x === '');
   };
@@ -80,7 +81,7 @@ const AddItem = () => {
    * called after successful form submission.
    */
   const resetForm = () => {
-    setNewItem({ itemName: '', itemDescription: '', itemTag: '', selectedDate: null });
+    setNewItem({ itemName: '', itemDescription: '', itemImage: '', itemTag: '', selectedDate: null });
     setErrors({});
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
@@ -130,6 +131,17 @@ const AddItem = () => {
             />
             {errors.itemDescription && <div className="error">{errors.itemDescription}</div>}
           </label>
+          <br />
+          <label>
+            Link to Image
+            <input
+              type="text"
+              name="itemImage"
+              value={newItem.itemImage}
+              onChange={handleInputChange}
+            />
+            {errors.itemImage && <div className="error">{errors.itemImage}</div>}
+            </label>
           <br />
           <label>
             Tag

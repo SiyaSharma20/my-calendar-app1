@@ -11,6 +11,7 @@ const localizer = momentLocalizer(moment);
 const ViewItems = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const fetchItems = async () => {
     try {
@@ -39,12 +40,17 @@ const ViewItems = () => {
 
       if (response.status === 200) {
         setItems((prevItems) => prevItems.filter(item => item._id !== itemId));
+        clearSelectedEvent();
       } else {
         console.error('Failed to delete item. Server returned:', response.status, response.data);
       }
     } catch (error) {
       console.error('Error deleting item:', error);
     }
+  };
+
+  const clearSelectedEvent = () => {
+    setSelectedEvent(null);
   };
 
   if (error) {
@@ -65,18 +71,35 @@ const ViewItems = () => {
         <div className="header">
           <h2>View Items</h2>
         </div>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
+        <div className="content">
+          <div className="calendar-container">
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500 }}
+              onSelectEvent={event => setSelectedEvent(event)}
+            />
+          </div>
+          <div className="event-list-container">
+            <h2>To Do</h2>
+            <ul className="item-list">
+              {items.map((item) => (
+                <li key={item._id} className="item">
+                  <h3>{item.itemName}</h3>
+                  <p><strong>Date:</strong> {moment(item.selectedDate).format('MMMM D, YYYY')}</p>
+                  <img src={item.itemImage} alt={item.itemDescription} width="500px"/>
+                  <button onClick={() => handleDelete(item._id)}>Delete</button>
+                  <button onClick={() => console.log('Edit button clicked')}>Edit</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ViewItems;
-
-
