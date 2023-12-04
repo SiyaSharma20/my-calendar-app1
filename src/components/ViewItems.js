@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ViewItems.css';
 import AuthenticatedHeader from './AuthenticatedHeader';
+import { useNavigate } from 'react-router-dom';
 
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -11,7 +12,41 @@ const formatDate = (dateString) => {
 const ViewItems = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
+  const handleEdit = (item) => {
+    try {
+      console.log('Redirecting to Edit Items with item details:', item);
+      // Redirect to the specified URL for editing with item details as parameters
+      navigate(`/edititems?itemId=${item._id}&itemName=${encodeURIComponent(item.itemName)}&itemDescription=${encodeURIComponent(item.itemDescription)}&selectedDate=${item.selectedDate}&itemTag=${encodeURIComponent(item.itemTag)}`);
+    } catch (error) {
+      console.error('Error redirecting to Edit Items:', error);
+    }
+  };
+  
+
+  const handleUpdate = async (updatedItem) => {
+    try {
+      console.log('Sending PUT request for item with id:', updatedItem._id);
+
+      const response = await axios.put(`http://localhost:4000/api/events/${updatedItem._id}`, updatedItem);
+
+      console.log('PUT request successful. Server response:', response);
+
+      if (response.status === 200) {
+        // Update the item in the state
+        setItems((prevItems) =>
+          prevItems.map((item) => (item._id === updatedItem._id ? updatedItem : item))
+        );
+        // Redirect back to the View Items page after successful update
+        navigate('/view-items');
+      } else {
+        console.error('Failed to update item. Server returned:', response.status, response.data);
+      }
+    } catch (error) {
+      console.error('Error updating item:', error);
+    }
+  };
   const fetchItems = async () => {
     try {
       const response = await axios.get('http://localhost:4000/api/events');
@@ -66,6 +101,7 @@ const ViewItems = () => {
             <p><strong>Date:</strong> {formatDate(item.selectedDate)}</p>
             <p><strong>Tag:</strong> {item.itemTag}</p>
             <button onClick={() => handleDelete(item._id)}>Delete</button>
+            <button onClick={() => handleEdit(item._id)}>Edit</button>
           </li>
         ))}
       </ul>

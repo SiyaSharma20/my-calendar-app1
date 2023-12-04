@@ -7,7 +7,7 @@ const Calendar = () => {
 
   return (
     <div className="calendar-container">
-      <h2>October 2023</h2>
+      <h2>December 2023</h2>
       <div className="calendar-navigation">
         <button className="calendar-nav-button">{'<'}</button>
         <button className="calendar-nav-button">{'>'}</button>
