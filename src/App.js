@@ -33,6 +33,7 @@ function App() {
     ReactDOM.render(
       <React.StrictMode>
     <Router>
+    <AppProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/additem" element={<AddItem />} />
@@ -49,6 +50,7 @@ function App() {
           }
         />
       </Routes>
+      </AppProvider>
     </Router>
     </React.StrictMode>,
     document.getElementById('root')
