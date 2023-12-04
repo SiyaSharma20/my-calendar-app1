@@ -21,6 +21,7 @@ header {
   }
   
   .navigation li {
+    margin: auto;
     cursor: pointer;
     padding: 5px;
     cursor: pointer;

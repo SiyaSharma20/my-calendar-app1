@@ -8,6 +8,8 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
   const [editedItem, setEditedItem] = useState({
     itemName: '',
     itemDescription: '',
+    itemImage: '',
+    itemTag: '',
     selectedDate: null,
   });
 
@@ -43,12 +45,16 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
       console.log('Date is required.');
     }
 
+    if (!editedItem.itemImage) {
+      isValid = false;
+      console.log('Link is required.');
+    }
     return isValid;
   };
 
   const resetForm = () => {
     setSelectedItemId('');
-    setEditedItem({ itemName: '', itemDescription: '', selectedDate: null });
+    setEditedItem({ itemName: '', itemDescription: '', itemImage: '', itemTag: '', selectedDate: null });
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 3000);
   };
@@ -90,6 +96,8 @@ const EditItem = ({ itemsList, onEditSubmit }) => {
             <h3>Edit Item Details</h3>
             <p>Item Name: {editedItem.itemName}</p>
             <p>Description: {editedItem.itemDescription}</p>
+            <p>Link to Image: {editedItem.itemImage}</p>
+            <p>Tag: {editedItem.itemTag}</p>
             <p>
               Date:{' '}
               {editedItem.selectedDate &&
