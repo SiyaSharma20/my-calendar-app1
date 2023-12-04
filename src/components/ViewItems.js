@@ -31,7 +31,7 @@ const ViewItems = () => {
   const handleEdit = (itemId) => {
     try {
       console.log('Redirecting to Edit items with item ID:', itemId);
-      navigate(`/edititems/${itemId}`);  // Pass the item ID as a parameter in the URL
+      navigate('/edititems');
     } catch (error) {
       console.error('Error redirecting to Edit Items:', error);
     }
