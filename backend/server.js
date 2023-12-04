@@ -116,5 +116,22 @@ app.post('/api/events', async (req, res) => {
   }
 });
 
+app.delete('/api/events/:id', async (req, res) => {
+  const eventId = req.params.id;
+
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(eventId);
+
+    if (!deletedEvent) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    res.status(200).json({ message: 'Event deleted successfully', deletedEvent });
+  } catch (error) {
+    console.error('Error deleting event:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
