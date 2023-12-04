@@ -32,27 +32,21 @@ function App() {
   return (
     ReactDOM.render(
       <React.StrictMode>
-    <Router>
-    <AppProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/additem" element={<AddItem />} />
-        <Route path="/viewitems" element={<ViewItems />} />
-        <Route path="/signup" element={<SignupPage />} />
-        {isUserSignedIn && (
-          <Route path="authenticatedview" element={<AuthenticatedView />} />
-        )}
-
-        <Route
-          path="/edititems"
-          element={
-            <EditItem itemToEdit={itemToEdit} onEditSubmit={onEditSubmit} />
-          }
-        />
-      </Routes>
-      </AppProvider>
-    </Router>
-    </React.StrictMode>,
+        <Router>
+          <AppProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/additem" element={<AddItem />} />
+              <Route path="/viewitems" element={<ViewItems />} />
+              <Route path="/signup" element={<SignupPage />} />
+              {isUserSignedIn && (
+              <Route path="authenticatedview" element={<AuthenticatedView />} />
+              )}
+              <Route path="/edititems"element={<EditItem itemToEdit={itemToEdit} onEditSubmit={onEditSubmit} />}/>
+            </Routes>
+          </AppProvider>
+        </Router>
+      </React.StrictMode>,
     document.getElementById('root')
     )
   );

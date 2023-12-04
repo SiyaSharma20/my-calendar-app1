@@ -88,6 +88,17 @@ const eventSchema = new mongoose.Schema({
   selectedDate: Date,
 });
 const Event = mongoose.model('Event', eventSchema);
+
+app.get('/api/events', async (req, res) => {
+  try {
+    const events = await Event.find({});
+    res.status(200).json(events);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/api/events', async (req, res) => {
   const { itemName, itemDescription, itemTag, selectedDate } = req.body;
   const newEvent = new Event({

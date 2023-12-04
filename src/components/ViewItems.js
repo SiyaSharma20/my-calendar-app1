@@ -1,52 +1,43 @@
-import React from 'react';
-import { FaCalendar } from 'react-icons/fa';
-import AuthenticatedHeader from './AuthenticatedHeader';
-import Card from './Card';
-import './ViewItems.css';
-
-import { useAppContext } from './AppContext';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-/**
- * Component for displaying the user's current items.
- *
- * @component
- */
 const ViewItems = () => {
-  const { state, dispatch } = useAppContext();
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch items from the server when the component mounts
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/events'); // Adjust the endpoint
-        dispatch({ type: 'SET_ITEMS', payload: response.data });
+        const response = await axios.get('http://localhost:4000/api/events');
+        if (response.status === 200) {
+          setItems(response.data);
+        } else {
+          setError(`Failed to fetch items. Server returned: ${response.status} ${response.data}`);
+        }
       } catch (error) {
-        console.error('Error fetching items:', error);
+        setError(`Error fetching items: ${error.message}`);
       }
     };
 
     fetchItems();
-  }, [dispatch]);
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
-      <AuthenticatedHeader />
-      <div className="ViewItems">
-        <h2>My Items</h2>
-        {state.items.map((item) => (
-          <Card key={item._id}>
-            <div>
-              <strong>{item.itemName}</strong>
-              <p>{item.itemDescription}</p>
-              <div>
-                <FaCalendar />
-                <span>{item.selectedDate}</span>
-              </div>
-            </div>
-          </Card>
+      <h2>View Items</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <strong>Name:</strong> {item.itemName},{' '}
+            <strong>Description:</strong> {item.itemDescription}, <strong>Date:</strong>{' '}
+            {item.selectedDate}, <strong>Tag:</strong> {item.itemTag}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
