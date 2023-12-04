@@ -123,15 +123,11 @@ app.post('/login', async (req, res) => {
 
 
 const eventSchema = new mongoose.Schema({
-
   itemName: String,
-
   itemDescription: String,
-
   itemTag: String,
-
+  itemImage: String,
   selectedDate: Date,
-
 });
 
 const Event = mongoose.model('Event', eventSchema);
@@ -156,22 +152,16 @@ app.get('/api/events', async (req, res) => {
 
 });
 
-
-
 app.post('/api/events', async (req, res) => {
 
-  const { itemName, itemDescription, itemTag, selectedDate } = req.body;
+  const { itemName, itemDescription, itemTag, itemImage, selectedDate } = req.body;
 
   const newEvent = new Event({
-
     itemName,
-
     itemDescription,
-
     itemTag,
-
+    itemImage,
     selectedDate,
-
   });
 
   try {
@@ -189,21 +179,10 @@ app.post('/api/events', async (req, res) => {
   }
 
 });
-
-
-
 app.delete('/api/events/:id', async (req, res) => {
-
   const eventId = req.params.id;
-
-
-
   try {
-
     const deletedEvent = await Event.findByIdAndDelete(eventId);
-
-
-
     if (!deletedEvent) {
 
       return res.status(404).json({ error: 'Event not found' });

@@ -15,7 +15,6 @@ import { AppProvider } from './components/AppContext';
 function App() {
   const isUserSignedIn = !!localStorage.getItem('token');
 
-  const isAuth = false;
   const [selectedItem, setSelectedItem] = useState(null);
   // Placeholder
   const itemToEdit = {
@@ -41,10 +40,14 @@ function App() {
           <AppProvider>
             <Routes>
               <Route path="/" element={<Home />} />
+              {isUserSignedIn && (
               <Route path="/additem" element={<AddItem />} />
+              )}
+              {isUserSignedIn && (
               <Route path="/viewitems" element={<ViewItems onEditClick={handleEditClick} />} />
+              )}
               <Route path="/signup" element={<SignupPage />} />
-              <Route path="*" element={<NotFound loggedIn={isAuth} />} />
+              <Route path="*" element={<NotFound loggedIn={isUserSignedIn} />} />
               {isUserSignedIn && (
                 <Route path="/authenticatedview" element={<AuthenticatedView />} />
               )}

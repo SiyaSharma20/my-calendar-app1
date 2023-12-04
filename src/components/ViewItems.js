@@ -56,69 +56,39 @@ const ViewItems = () => {
         console.error('Failed to update item. Server returned:', response.status, response.data);
 
       }
-
     } catch (error) {
-
       console.error('Error updating item:', error);
-
     }
-
   };
   const handleDelete = async (itemId) => {
     try {
 
       const response = await axios.delete(`http://localhost:4000/api/events/${itemId}`);
-
-
-
       if (response.status === 200) {
-
         setItems((prevItems) => prevItems.filter(item => item._id !== itemId));
-
         clearSelectedEvent();
-
       } else {
-
         console.error('Failed to delete item. Server returned:', response.status, response.data);
-
       }
-
     } catch (error) {
-
       console.error('Error deleting item:', error);
-
     }
-
   };
-
-
-
   const clearSelectedEvent = () => {
-
     setSelectedEvent(null);
 
   };
 
-
-
   if (error) {
-
     return <div className="error">{error}</div>;
 
   }
-
-
-
   const events = items.map(item => ({
-
     id: item._id,
-
     title: item.itemName,
-
+    describe: item.itemDescription,
     start: new Date(item.selectedDate),
-
     end: new Date(item.selectedDate),
-
   }));
   return (
     <div>
@@ -144,7 +114,8 @@ const ViewItems = () => {
               {items.map((item) => (
                 <li key={item._id} className="item">
                   <h3>{item.itemName}</h3>
-                  <img src={item.itemImage} alt={item.itemName}/>
+                  <h3>{item.itemDescription}</h3>
+                  <img src={item.itemImage} width={100} alt={item.itemName}/>
                   <p><strong>Date:</strong> {moment(item.selectedDate).format('MMMM D, YYYY')}</p>
                   <button onClick={() => handleDelete(item._id)}>Delete</button>
                   <button onClick={() => handleEdit(item._id)}>Edit</button>

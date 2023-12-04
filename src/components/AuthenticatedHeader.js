@@ -1,5 +1,5 @@
 import React from 'react';
-import './AuthenticatedHeader.css';
+import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 

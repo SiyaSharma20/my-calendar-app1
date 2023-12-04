@@ -67,7 +67,6 @@ const EditItem = ({ itemsList, onEditSubmit, selectedItemId }) => {
         <h2>Edit Item</h2>
         <form onSubmit={handleSubmit}>
           <div>
-            <h3>Edit Item Details</h3>
             <label>
               Item Name
               <input

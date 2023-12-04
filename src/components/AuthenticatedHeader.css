@@ -3,21 +3,20 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
   background-color: #f8f9fa;
 }
 
 .logo {
   font-weight: bold;
   color: #5e72e4; /* Adjust the color to match your branding */
+  font-size: 70px;
 }
 
 .navigation ul {
   list-style: none;
   display: flex;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
+  margin: 10px;
+  padding: 5px;
 }
 
 .navigation li {

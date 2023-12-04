@@ -35,7 +35,7 @@
 }
 /* Style for the form input fields */
 .AddItem input, select {
-  padding: 8px;
+  padding: 12px;
   margin: 0px 7px 12px 7px;
   border: 1px solid #ccc;
   border-radius: 4px;
